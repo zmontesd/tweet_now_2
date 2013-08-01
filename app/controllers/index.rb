@@ -37,8 +37,6 @@ end
 post '/tweet' do
   @tweet = Tweet.create(content: params[:content], user_id: session[:user])
   TweetWorker.perform(@tweet)
-  # create the tweet!
-  # call TweetWorker.perform(tweet_id)
-  # move the twitter.update to background worker!
+
   redirect '/'
 end
