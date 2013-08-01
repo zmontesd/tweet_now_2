@@ -14,8 +14,7 @@ end
 
 get '/auth' do
   # the `request_token` method is defined in `app/helpers/oauth.rb`
-  p @access_token = request_token.get_access_token(oauth_verifier: params[:oauth_verifier])
-
+  @access_token = request_token.get_access_token(oauth_verifier: params[:oauth_verifier])
   # our request token is only valid until we use it to get an access token, so let's delete it from our session
   session.delete(:request_token)
 
@@ -25,18 +24,27 @@ get '/auth' do
   @user.oauth_secret = @access_token.params[:oauth_token_secret]
   @user.save!
 
-  session[:user] = @user.id
+  session[:user_id] = @user.id
 
   erb :index
 end
 
 get '/tweet' do
-  erb :tweet
+  erb :index
 end
 
 post '/tweet' do
   @tweet = Tweet.create(content: params[:content], user_id: session[:user])
-  TweetWorker.perform(@tweet)
-
-  redirect '/'
+  @job_id = TweetWorker.perform_async(@tweet.id)
+  @tweet.job_id = @job_id
+  @tweet.save!
+  @tweet.user.to_json
+  # redirect '/'
 end
+
+
+get '/status/:job_id' do |job_id|
+  p "this is the job id #{job_id}"
+  # return the status of a job to an AJAX call
+end
+
