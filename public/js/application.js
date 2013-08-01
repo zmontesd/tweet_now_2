@@ -10,6 +10,7 @@ $(document).ready(function() {
     }).done(function(result) {
       $('#status').hide();
       $('#tweet').append('success');
+       window.location.href = '/';
     }).fail(function(result) {
       $('#status').hide();
       $('#tweet').append('failed');
