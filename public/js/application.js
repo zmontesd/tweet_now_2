@@ -16,4 +16,15 @@ $(document).ready(function() {
       $('#tweet').append('failed');
     });
   });
+
+  $(document).on('click', '.job', function(e){
+    e.preventDefault();
+    $.ajax({
+      url: $(this).attr('href'),
+      type: 'get',
+    }).done(function(result){
+      console.log(result);
+      $('#text').text(result.tweet.content + ' - Finished?: ' + result.job_status);
+    }); 
+  });
 });

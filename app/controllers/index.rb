@@ -39,12 +39,12 @@ post '/tweet' do
   @tweet.job_id = @job_id
   @tweet.save!
   @tweet.user.to_json
-  # redirect '/'
 end
 
 
 get '/status/:job_id' do |job_id|
-  p "this is the job id #{job_id}"
-  # return the status of a job to an AJAX call
+  job_status = job_is_complete(job_id)
+  content_type :json
+  {:tweet => current_user.tweets.find_by_job_id(job_id), :job_status => job_status}.to_json
 end
 

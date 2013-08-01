@@ -11,7 +11,7 @@
       <% if current_user.tweets %>
       <ul>
         <% current_user.tweets.each do |tweet| %>
-        <li><a href="/status/<%= tweet.job_id%>"><%= tweet.content %></a></li>
+        <li><a class="job" href="/status/<%= tweet.job_id%>"><%= tweet.content %></a><p id="text"></p></li>
         <% end %>
       </ul>
       <% end %>
