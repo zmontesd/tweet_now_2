@@ -1,13 +1,20 @@
 <div class="container">
   <h1>Tweet Now! 2: Multi-User</h1>
-  <% if @user %>
+  <% if current_user %>
     <div>
     <p>
-        <strong>Username:</strong> <%= @user.username %><br>
+        <strong>Username:</strong> <%= current_user.username %><br>
     </p>
       <p id="render-partial">
         <%= erb :_tweet %>
       </p>
+      <% if current_user.tweets %>
+      <ul>
+        <% current_user.tweets.each do |tweet| %>
+        <li><a href="/status/<%= tweet.job_id%>"><%= tweet.content %></a></li>
+        <% end %>
+      </ul>
+      <% end %>
       <p>
         <button><a href="/sign_out">Sign Out</a></button>
       </p>
